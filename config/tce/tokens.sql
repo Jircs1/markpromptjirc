@@ -10,11 +10,11 @@ create or replace function public.tokens_encrypt_secret_value() returns "trigger
     as $$
     begin
             new.encrypted_value = case when new.encrypted_value is null then null else
-      case when '<ENCRYPTION-KEY-ID>' is null then null else pg_catalog.encode(
+      case when 'c8efbf83-5e2e-4aa2-b103-334e066a6d8c' is null then null else pg_catalog.encode(
         pgsodium.crypto_aead_det_encrypt(
         pg_catalog.convert_to(new.encrypted_value, 'utf8'),
         pg_catalog.convert_to(('')::text, 'utf8'),
-        '<ENCRYPTION-KEY-ID>'::uuid,
+        'c8efbf83-5e2e-4aa2-b103-334e066a6d8c'::uuid,
         null
         ),
         'base64') end end;
@@ -30,7 +30,7 @@ grant all on function public.tokens_encrypt_secret_value() to "service_role";
 
 create trigger tokens_encrypt_secret_trigger_value before insert or update of encrypted_value on public.tokens for each row execute function public.tokens_encrypt_secret_value();
 
-create or replace view public.decrypted_tokens as
+create or replace view public.v_decrypted_tokens as
  select tokens.id,
     tokens.inserted_at,
     tokens.project_id,
@@ -40,15 +40,15 @@ create or replace view public.decrypted_tokens as
             when (tokens.encrypted_value is null) then null::"text"
             else
             case
-                when ('<ENCRYPTION-KEY-ID>' is null) then null::"text"
-                else convert_from(pgsodium.crypto_aead_det_decrypt(decode(tokens.encrypted_value, 'base64'::"text"), convert_to(''::"text", 'utf8'::"name"), '<ENCRYPTION-KEY-ID>'::"uuid", null::"bytea"), 'utf8'::"name")
+                when ('c8efbf83-5e2e-4aa2-b103-334e066a6d8c' is null) then null::"text"
+                else convert_from(pgsodium.crypto_aead_det_decrypt(decode(tokens.encrypted_value, 'base64'::"text"), convert_to(''::"text", 'utf8'::"name"), 'c8efbf83-5e2e-4aa2-b103-334e066a6d8c'::"uuid", null::"bytea"), 'utf8'::"name")
             end
         end as decrypted_value
    from public.tokens;
 
-alter table public.decrypted_tokens owner to postgres;
+alter table public.v_decrypted_tokens owner to postgres;
 
-security label for pgsodium on column public.tokens.encrypted_value is 'encrypt with key id <ENCRYPTION-KEY-ID> security invoker';
+security label for pgsodium on column public.tokens.encrypted_value is 'encrypt with key id c8efbf83-5e2e-4aa2-b103-334e066a6d8c security invoker';
 
 update tokens
 set encrypted_value = value

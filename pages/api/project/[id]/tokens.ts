@@ -59,7 +59,7 @@ export default withProjectAccess(
 
     if (req.method === 'GET') {
       const { data: tokens, error } = await supabaseAdmin
-        .from('decrypted_tokens')
+        .from('v_decrypted_tokens')
         .select('*')
         .eq('project_id', projectId);
 

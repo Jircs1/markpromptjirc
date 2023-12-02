@@ -1282,6 +1282,76 @@ export interface Database {
           }
         ]
       }
+      v_decrypted_tokens: {
+        Row: {
+          created_by: string | null
+          decrypted_value: string | null
+          encrypted_value: string | null
+          id: number | null
+          inserted_at: string | null
+          project_id: string | null
+        }
+        Insert: {
+          created_by?: string | null
+          decrypted_value?: never
+          encrypted_value?: string | null
+          id?: number | null
+          inserted_at?: string | null
+          project_id?: string | null
+        }
+        Update: {
+          created_by?: string | null
+          decrypted_value?: never
+          encrypted_value?: string | null
+          id?: number | null
+          inserted_at?: string | null
+          project_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tokens_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tokens_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "v_users_with_pending_weekly_update_email"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tokens_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tokens_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_file_section_search_infos"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "tokens_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_team_project_info"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "tokens_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_team_project_usage_info"
+            referencedColumns: ["project_id"]
+          }
+        ]
+      }
       v_distinct_unprocessed_query_stats_project_ids: {
         Row: {
           min_created_at: string | null

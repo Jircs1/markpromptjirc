@@ -95,7 +95,7 @@ export type DbConversation =
 export type DbSyncQueue = Database['public']['Tables']['sync_queues']['Row'];
 
 export type DbDecryptedToken =
-  Database['public']['Views']['decrypted_tokens']['Row'];
+  Database['public']['Views']['v_decrypted_tokens']['Row'];
 export type DbEncryptedToken = Database['public']['Tables']['tokens']['Row'];
 
 export type Token = {

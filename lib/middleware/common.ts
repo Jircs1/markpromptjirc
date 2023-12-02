@@ -58,7 +58,7 @@ export const getProjectIdFromToken = async (
   // In un-authed scenarios, supabase needs to have service_role
   // access as the tokens table has RLS.
   const { data } = await supabase
-    .from('decrypted_tokens')
+    .from('v_decrypted_tokens')
     .select('project_id')
     .eq('decrypted_value', token)
     .limit(1)
