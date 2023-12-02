@@ -75,7 +75,7 @@ export const geLLMInfoFromModel = (model: OpenAIModelIdWithType): LLMInfo => {
 export type DbUser = Database['public']['Tables']['users']['Row'];
 export type DbTeam = Database['public']['Tables']['teams']['Row'];
 export type Project = Database['public']['Tables']['projects']['Row'];
-export type Token = Database['public']['Tables']['tokens']['Row'];
+
 export type Domain = Database['public']['Tables']['domains']['Row'];
 export type Membership = Database['public']['Tables']['memberships']['Row'];
 export type MembershipType =
@@ -93,6 +93,17 @@ export type DbQueryStat = Database['public']['Tables']['query_stats']['Row'];
 export type DbConversation =
   Database['public']['Tables']['conversations']['Row'];
 export type DbSyncQueue = Database['public']['Tables']['sync_queues']['Row'];
+
+export type DbDecryptedToken =
+  Database['public']['Views']['decrypted_tokens']['Row'];
+export type DbEncryptedToken = Database['public']['Tables']['tokens']['Row'];
+
+export type Token = {
+  id: DbDecryptedToken['id'];
+  insertedAt: DbDecryptedToken['inserted_at'];
+  projectId: DbDecryptedToken['project_id'];
+  value: string;
+};
 
 export type NangoSource = Omit<DbSource, 'data'> & {
   data: NangoSourceDataType;
