@@ -54,17 +54,17 @@ export const getProjectIdFromToken = async (
   res: NextResponse,
   supabase: SupabaseClient<Database>,
   token: string,
-) => {
+): Promise<Project['id'] | undefined> => {
   // In un-authed scenarios, supabase needs to have service_role
   // access as the tokens table has RLS.
   const { data } = await supabase
-    .from('tokens')
+    .from('decrypted_tokens')
     .select('project_id')
-    .eq('value', token)
+    .eq('decrypted_value', token)
     .limit(1)
     .maybeSingle();
 
-  return data?.project_id;
+  return data?.project_id || undefined;
 };
 
 // Cf. https://stackoverflow.com/questions/68338838/how-to-get-the-ip-address-of-the-client-from-server-side-in-next-js-app

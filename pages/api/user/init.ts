@@ -176,7 +176,8 @@ export default async function handler(
     const value = generateKey();
     await supabase.from('tokens').insert([
       {
-        value,
+        value: '', // For backwards compatibility
+        encrypted_value: value,
         project_id: project.id,
         created_by: session.user.id,
       },

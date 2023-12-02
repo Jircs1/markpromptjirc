@@ -1,6 +1,7 @@
 -- Extensions
 create extension if not exists vector with schema public;
 create extension if not exists pgroonga with schema public;
+create extension if not exists pgsodium with schema pgsodium;
 
 -- Users
 create table users (
